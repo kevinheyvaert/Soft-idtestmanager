@@ -1,6 +1,5 @@
 package be.ua.iw.ei.se.controller;
 
-import be.ua.iw.ei.se.model.Role;
 import be.ua.iw.ei.se.model.User;
 import be.ua.iw.ei.se.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 /**
  * Created by Kevin on 8/10/2015.
  */
@@ -22,7 +19,7 @@ public class HomeController {
     private UserService userService;
 
     @ModelAttribute("allUsers")
-    public List<User> populateUsers() {
+    public Iterable<User> populateUsers() {
         return this.userService.findAll();
     }
 
@@ -54,9 +51,10 @@ public class HomeController {
         model.clear();
         return "redirect:/admin";
     }
-
+    /*
     @ModelAttribute("allRoles")
-    public List<Role> getRoles() {
+    public Iterable<Role> getRoles() {
         return this.userService.getRoles();
     }
+    */
 }

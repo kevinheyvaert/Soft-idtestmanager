@@ -1,10 +1,11 @@
 package be.ua.iw.ei.se;
 
-import be.ua.iw.ei.se.service.UserService;
+import org.h2.server.web.WebServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.util.AntPathRequestMatcher;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -23,8 +25,10 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled=true)
+
+//import javax.servlet.annotation.WebServlet;
 @SpringBootApplication
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled=true)
 public class IdTestManagerApplication extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {
@@ -55,11 +59,11 @@ public class IdTestManagerApplication extends WebMvcConfigurerAdapter {
             GlobalAuthenticationConfigurerAdapter {
 
         @Autowired
-        private UserService userService;
+        private UserDetailsService securityService;
 
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(userService);
+            auth.userDetailsService(securityService);
         }
     }
 
@@ -87,7 +91,12 @@ public class IdTestManagerApplication extends WebMvcConfigurerAdapter {
         registry.addViewController("/admin").setViewName("admin");
     }
 
-
+    @Bean
+    ServletRegistrationBean h2servletRegistration() {
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
+        registrationBean.addUrlMappings("/console/*");
+        return registrationBean;
+    }
 
 }
 

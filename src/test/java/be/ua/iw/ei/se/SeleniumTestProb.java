@@ -17,13 +17,11 @@ public class SeleniumTestProb {
 
 
         driver.navigate().to("http://146.175.138.153/");
-        Assert.assertFalse("body should start with this is a TEST" ,        //asserTrue proberen met Title
-                driver.getTitle().startsWith("This is a test"));
+        Assert.assertTrue("body should start with this is a TEST" ,        //asserTrue proberen met Title
+                driver.getTitle().startsWith("IDT"));
 
         driver.close();
         driver.quit();
-
-        //woehoe
 
     }
 }

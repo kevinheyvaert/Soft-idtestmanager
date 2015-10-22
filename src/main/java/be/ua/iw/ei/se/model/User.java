@@ -1,17 +1,30 @@
 package be.ua.iw.ei.se.model;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.util.List;
 
 /**
  * Created by Kevin on 8/10/2015.
  */
-public class User {
+@Entity
+public class User extends AbstractPersistable<Long> {
+    @ManyToMany
+    @JoinTable(
+            name="USER_ROLE",
+            joinColumns={@JoinColumn(name="USER_ID",
+                    referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="ROLE_ID",
+                    referencedColumnName="ID")})
+    private List<Role> roles;
     private String firstName;
     private String lastName;
-    private List<Role> roles;
     private String userName;
     private String password;
-
     public User (){
 
     }
@@ -27,9 +40,8 @@ public class User {
         this.userName = userName;
         this.password = password;
     }
-    public String getFirstName() {
-        return firstName;
-    }
+
+    public String getFirstName() {return firstName;}
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -40,9 +52,11 @@ public class User {
         this.lastName = lastName;
     }
 
+
     public List<Role> getRoles() {
         return roles;
     }
+
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
@@ -51,8 +65,6 @@ public class User {
     public void setUserName(String userName){this.userName = userName;}
     public String getPassword() {return password;}
     public void setPassWord(String password){this.password = password;}
-
-
 
 }
 

@@ -1,38 +1,33 @@
 package be.ua.iw.ei.se.service;
 
-import be.ua.iw.ei.se.model.Permission;
-import be.ua.iw.ei.se.model.Role;
 import be.ua.iw.ei.se.model.User;
 import be.ua.iw.ei.se.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Kevin on 8/10/2015.
  */
 @Service
-public class UserService implements UserDetailsService {
+public class UserService  {
     @Autowired
     private UserRepository userRepository;
-    public List<User> findAll() {
-        return this.userRepository.findAll();
-    }
-    public List<Role> getRoles() {return this.userRepository.getRoles();}
+   // public List<User> findAll() {return this.userRepository.findAll();}
+    public Iterable<User> findAll() {return this.userRepository.findAll();}
+    //public Iterable<Role> getRoles() {return this.userRepository.findAll();}
+
+
 
     public void add(final User user) {
 
-        this.userRepository.add(user);
+        this.userRepository.save(user); //ipv add
     }
 
+    public void delete(Long id) {
+        this.userRepository.delete(id);
+    }
+
+    /*
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         UserDetails ud = null;
@@ -51,5 +46,8 @@ public class UserService implements UserDetailsService {
         if (ud == null) throw new UsernameNotFoundException("No user with username '" + userName + "' found!");
         return ud;
     }
-    
+    */
+
+    public User findByUserName(String userName) {return userRepository.findByUserName(userName);
+    }
 }
